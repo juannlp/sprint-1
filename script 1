@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TravelNest - Busca Hoteles y Vuelos</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f8ff;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #0077b6;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+  .logo svg {
+    margin-right: 10px;
+  }
+  main {
+    max-width: 700px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+  h1 {
+    text-align: center;
+    color: #023e8a;
+  }
+  form {
+    margin-top: 20px;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #023e8a;
+  }
+  input, select {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 5px;
+    border: 1.5px solid #90e0ef;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  button {
+    margin-top: 25px;
+    width: 100%;
+    background-color: #0096c7;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0077b6;
+  }
+  .results {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #caf0f8;
+    border-radius: 8px;
+    color: #023e8a;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" aria-label="Logo TravelNest">
+    <!-- Simple bird nest logo SVG -->
+    <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" stroke="#00b4d8" stroke-width="4"/>
+      <path d="M20 44c6-10 24-12 24-12" stroke="#0077b6" stroke-width="4" stroke-linecap="round"/>
+      <path d="M24 40c4-6 16-7 16-7" stroke="#0077b6" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="32" cy="32" r="6" fill="#0096c7"/>
+    </svg>
+    TravelNest
+  </div>
+</header>
+<main>
+  <h1>Busca Hoteles y Vuelos</h1>
+  <form id="travelForm">
+    <label for="destination">Destino</label>
+    <input type="text" id="destination" name="destination" placeholder="Ciudad o aeropuerto" required />
+    
+    <label for="checkin">Fecha de Entrada (Hoteles)</label>
+    <input type="date" id="checkin" name="checkin" required />
+    
+    <label for="checkout">Fecha de Salida (Hoteles)</label>
+    <input type="date" id="checkout" name="checkout" required />
+    
+    <label for="flightDate">Fecha de Vuelo</label>
+    <input type="date" id="flightDate" name="flightDate" required />
+    
+    <label for="passengers">Número de Pasajeros</label>
+    <select id="passengers" name="passengers" required>
+      <option value="1">1 pasajero</option>
+      <option value="2">2 pasajeros</option>
+      <option value="3">3 pasajeros</option>
+      <option value="4">4 pasajeros</option>
+      <option value="5">5 pasajeros</option>
+    </select>
+    
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div class="results" id="results" aria-live="polite" style="display:none;"></div>
+</main>
+
+<script>
+  const form = document.getElementById('travelForm');
+  const results = document.getElementById('results');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Recoger datos del formulario
+    const destination = form.destination.value.trim();
+    const checkin = form.checkin.value;
+    const checkout = form.checkout.value;
+    const flightDate = form.flightDate.value;
+    const passengers = form.passengers.value;
+
+    // Validar fechas
+    if (new Date(checkin) >= new Date(checkout)) {
+      alert('La fecha de salida debe ser posterior a la fecha de entrada.');
+      return;
+    }
+    if (new Date(flightDate) < new Date()) {
+      alert('La fecha de vuelo no puede ser en el pasado.');
+      return;
+    }
+
+    // Simulación de resultados (en la vida real, aquí se llamaría a una API)
+    results.style.display = 'block';
+    results.innerHTML = `
+      <h2>Resultados para <strong>${destination}</strong>:</h2>
+      <p>Hoteles disponibles del <strong>${checkin}</strong> al <strong>${checkout}</strong>.</p>
+      <ul>
+        <li>Hotel Blue Sky - $80 por noche</li>
+        <li>Hotel Sol - $65 por noche</li>
+        <li>Hotel Luna - $72 por noche</li>
+      </ul>
+      <p>Vuelos disponibles para <strong>${passengers} pasajero(s)</strong> el <strong>${flightDate}</strong>:</p>
+      <ul>
+        <li>Vuelo Directo - $120</li>
+        <li>Vuelo con Escala - $95</li>
+      </ul>
+      <p>¡Gracias por usar TravelNest!</p>
+    `;
+  });
+</script>
+</body>
+</html>
